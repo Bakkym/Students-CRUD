@@ -1,8 +1,8 @@
-const express = require('express')
-const app = express()
-const PORT = process.env.PORT || 4000
+import makeApp from './app'
+import { database } from './database/database'
 
+const app = makeApp(database)
 
-app.listen(PORT, () => {
-    console.log('server on port', PORT)
+app.listen(4000, () => {
+    console.log('server on port', 4000)
 })
