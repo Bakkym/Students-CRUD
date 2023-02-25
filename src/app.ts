@@ -1,7 +1,7 @@
 import express, {Application} from 'express'
 
 
-export default function makeApp(database: Function): express.Application {
+export default function makeApp(database: any): express.Application {
     
     const app: Application = express()
     

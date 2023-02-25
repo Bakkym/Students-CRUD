@@ -1,6 +1,18 @@
-import app from '../app'    
+import makeApp from '../app'
 import request from 'supertest'
 import {validateCedula, validateName, validateData} from '../middlewares/students.middleware'
+
+const getStudent = jest.fn()
+const createStudent = jest.fn()
+const updateStudent = jest.fn()
+const deleteStudent = jest.fn()
+
+const app = makeApp({
+    getStudent,
+    createStudent,
+    updateStudent,
+    deleteStudent,
+})
 
 
 
@@ -37,11 +49,76 @@ describe('validateName testing', () => {
 
 describe('validateData testing', () => {
     test('cédula con letras y nombre con números FAIL', () => {
-        expect(validateData('Cédula', '123123123')).toBe(false)
-        expect(validateData('1001519485', 'Juan Camilo')).toBe(true)
+        expect(validateData('Cédula', '123123123', 'camilo@gmail.com', '232323245', 'ing sistemas')).toBe(false)
+        expect(validateData('1001519485', 'Juan Camilo', 'camilo@gmail.com', '2324524452', 'ing química')).toBe(true)
+
+    })
+
+    test('datos incompletos FAIL', () => {
+        expect(validateData('1001519485', 'Juan Camilo', '', '', '')).toBe(false)
+        expect(validateData('', '', '', '', '')).toBe(false)
+        expect(validateData('1001519485', '', '', '', '')).toBe(false)
+        expect(validateData('', 'Juan Camilo', '', '', '')).toBe(false)
+        expect(validateData('1001519485', 'Juan Camilo', 'camilo@gmail.com', '2324524452', 'ing química')).toBe(true)
+
+        
+    })
+})
+
+
+describe('GET METHOD', () => {
+    test('Obteniendo todos los estudiantes de la base de datos', async () => {
+        const response = await request(app).get('/students')
+
+        expect(response.statusCode).toBe(200)
+        expect(response.body.cedula).toBe(true)
+        expect(response.type).toBe(Array)
 
     })
 })
+
+describe('POST METHOD', () => {
+    test('Agregando un estudiante a la base de datos', async () =>{
+        await request(app).post('/students').send({
+            cedula:'1001523456',
+            name: 'Juan Camilo Barrientos',
+            email: 'camilo@gmail.com',
+            phone: '3202729283',
+            career: 'Ing sistemas'
+
+        })
+
+        expect(createStudent.mock.calls.length).toBe(1)
+
+
+    } )
+})
+
+
+describe('PUT METHOD', () => {
+    test('Actualizando un estudiante en la base de datos', async() => {
+        await request(app).put('/students').send({
+            cedula:'1001523456',
+            name: 'Juan Camilo Barrientos Herrera',
+            email: 'camilo@gmail.com',
+            phone: '3202729283',
+            career: 'Ing sistemas'
+
+        })
+        expect(updateStudent.mock.calls.length).toBe(1)
+    })
+})
+
+describe('DELETE METHOD', () => {
+    test('Eliminando un estudiante de la base de datos', async () => {
+        await request(app).delete('/students').send({
+            cedula: '1001523456'
+        })
+    })
+
+    expect(deleteStudent.mock.calls.length).toBe(1)
+})
+
 
 
     
@@ -88,7 +165,7 @@ describe('validateData testing', () => {
 
 
 // // [{
-// //     cedula: '1001418477',
+// //     cedula: '1001238477',
 // //     nombreCompleto : 'Juan Camilo',
 // //     correo: 'camilo@gmail.com',
 // //     celular : '3202922877',
