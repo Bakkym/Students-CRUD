@@ -1,14 +1,15 @@
 import makeApp from '../app'
 import request from 'supertest'
 import {validateCedula, validateName, validateData} from '../middlewares/students.middleware'
+import { application, json } from 'express'
 
-const getStudent = jest.fn()
+const getStudents = jest.fn()
 const createStudent = jest.fn()
 const updateStudent = jest.fn()
 const deleteStudent = jest.fn()
 
 const app = makeApp({
-    getStudent,
+    getStudents,
     createStudent,
     updateStudent,
     deleteStudent,
@@ -68,11 +69,11 @@ describe('validateData testing', () => {
 
 describe('GET METHOD', () => {
     test('Obteniendo todos los estudiantes de la base de datos', async () => {
-        const response = await request(app).get('/students')
+        const response = await request(app).get('/api/students')
 
         expect(response.statusCode).toBe(200)
-        expect(response.body.cedula).toBe(true)
-        expect(response.type).toBe(Array)
+        expect(response.body.cedula).toContain
+        expect(response.type).toBe('application/json')
 
     })
 })
@@ -114,9 +115,9 @@ describe('DELETE METHOD', () => {
         await request(app).delete('/students').send({
             cedula: '1001523456'
         })
+        expect(deleteStudent.mock.calls.length).toBe(1) 
     })
 
-    expect(deleteStudent.mock.calls.length).toBe(1)
 })
 
 

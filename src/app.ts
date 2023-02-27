@@ -1,15 +1,15 @@
 import express, {Application} from 'express'
+import studentRoutes from './routes/student.router'
 
 
-export default function makeApp(database: any): express.Application {
+export default function makeApp(database: Object): express.Application {
     
     const app: Application = express()
     
     app.use(express.json())
-    app.use('/students', (req, res, next) => {
-        res.send('hola')
+    app.use('/api', studentRoutes)
 
-    })
+
 
 
     
