@@ -1,5 +1,5 @@
 import express, {Application} from 'express'
-import studentRoutes from './routes/student.router'
+import studentRoutes from './routes/students.router'
 
 
 export default function makeApp(database: Object): express.Application {
