@@ -7,11 +7,11 @@ const prisma = new PrismaClient()
 export async function createStudent() {
 // const student = await prisma.students.create({
 //   data: {
-//     cedula: '1001519741',
-//     name: 'Juan Camilo',
-//     email: 'camilo@gmail.com',
-//     phone: '32027238495',
-//     career: 'Ing sistemas'
+//     cedula: '1001519751',
+//     name: 'Juan Pablo',
+//     email: 'pablo@gmail.com',
+//     phone: '32023438495',
+//     career: 'Ing química'
 
 //   }
 // })
@@ -19,6 +19,7 @@ export async function createStudent() {
 // console.log(student)
 
 }
+
 
 createStudent()
   .then(async () => {
