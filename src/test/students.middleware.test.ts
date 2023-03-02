@@ -1,6 +1,6 @@
 
 import { expect, test, describe, vi } from 'vitest'
-import {validateCedula, validateName, validateData, validateIfCedulaOrEmailExist} from '../middlewares/students.middleware'
+import {validateCedula, validateName, validateData, validateIfCedulaOrEmailNotExist} from '../middlewares/students.validateData'
 
 
 describe('validateCedula testing', () => {
@@ -50,19 +50,19 @@ describe('validateData testing', () => {
     })
 })
 
-describe('validateIfCedulaOrEmailExist testing', () => {
+describe('validateIfCedulaOrEmailNotExist testing', () => {
     test('Cédula ya registrado FAIL', async () => {
-        expect(await validateIfCedulaOrEmailExist('1001639741', 'pablito3@gmail.com')).toBe(false)
+        expect(await validateIfCedulaOrEmailNotExist('1001639741', 'pablito3@gmail.com')).toBe(false)
 
     })
 
     test('Email ya registrado FAIL',async () => {
-        expect(await validateIfCedulaOrEmailExist('1001636548', 'camilo@gmail.com')).toBe(false)
+        expect(await validateIfCedulaOrEmailNotExist('1001636548', 'camilo@gmail.com')).toBe(false)
         
     })
 
     test ('Cédula y email no registrados PASS', async () => {
-        expect(await validateIfCedulaOrEmailExist('425524252', 'carlos26@gmail.com')).toBe(true)
+        expect(await validateIfCedulaOrEmailNotExist('425524252', 'carlos26@gmail.com')).toBe(true)
 
     })
 })

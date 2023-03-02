@@ -25,23 +25,39 @@ interface DeleteStudent {
 
 
 export const getStudents = async (req: any, res: any, next: any): Promise<void> => {
-    const students = await prisma.students.findMany()
 
-    res.send(students)
+    try {
+        const students = await prisma.students.findMany()
+    
+        res.send(students)
+        
+    } catch (error) {
+        res.status(500).send()
+        
+    }
+    prisma.$disconnect
 
 }
 
 export const postStudent = async (req: any, res: any, next: any): Promise<void> => {
 
     res.send(await createStudent(req.body))
+    prisma.$disconnect
 
 }
 
 export const putStudent = async (req: any, res: any, next: any): Promise<void> => {
 
+    res.send(await updateStudent(req.body))
+    prisma.$disconnect
+
+
 }
 
 export const deleteStudent = async (req: any, res: any, next: any): Promise<void> => {
+
+    res.send(await removeStudent(req.body))
+    prisma.$disconnect
 
 }
 
@@ -59,7 +75,7 @@ export const createStudent = async (student: CreateStudent) => {
     } catch (error) {
         return new Error('Student creation failed').message
     }
-
+    
 
 }
 
@@ -69,6 +85,7 @@ export const updateStudent = async (student: UpdateStudent) => {
         return await prisma.students.update({
             where: { cedula: student.cedula },
             data: student
+    
 
         })
 
@@ -77,7 +94,6 @@ export const updateStudent = async (student: UpdateStudent) => {
         return new Error('Student updating failed').message
 
     }
-
 }
 
 export const removeStudent = async (student: DeleteStudent) => {
@@ -93,7 +109,6 @@ export const removeStudent = async (student: DeleteStudent) => {
 
         return new Error('Student delete failed').message
     }
-
 
 }
 

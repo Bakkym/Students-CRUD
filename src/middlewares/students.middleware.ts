@@ -1,13 +1,12 @@
 
+import { validateData, validateIfCedulaOrEmailNotExist, validateIfCedulaExist} from './students.validateData'
 
-import prisma from '../libs/prisma'
 
-
-export const dataMiddleware = async (req: any, res: any, next: any) => {
+export const validateDataMiddleware = async (req: any, res: any, next: any) => {
 
     const { cedula, name, email, phone, career } = req.body
 
-    if (validateData(cedula, name, email, phone, career) && await validateIfCedulaOrEmailExist(cedula, email)){
+    if (validateData(cedula, name, email, phone, career) && await validateIfCedulaOrEmailNotExist(cedula, email)){
         next()
     } else {
 
@@ -16,74 +15,18 @@ export const dataMiddleware = async (req: any, res: any, next: any) => {
 
 }
 
+export const validateIfCedulaExistMiddleware = async (req:any, res: any, next:any) => {
+    const { cedula } = req.body
+    if (await validateIfCedulaExist(cedula)){
+        next()
 
-
-export const validateIfCedulaOrEmailExist = async(cedula: string, email: string) => {
-    email = email.toLowerCase()
-
-
-    const cedulaFound = await prisma.students.findFirst({
-        where: {cedula: cedula}
-    })
-    const emailFound = await prisma.students.findFirst({
-        where: {email: email}
-    })
-
-    if (cedulaFound || emailFound){
-        return false
     } else {
-        return true
+        res.send('cedula not found')
     }
 
-}
-
-
-
-
-export const validateData = (cedula: string, name: string, email: string, phone: string, career: string): boolean => {
-
-    if (email && phone && career) {
-
-        return validateCedula(cedula) && validateName(name)
-    }
-
-    return false
 
 
 }
 
 
-export const validateCedula = (cedula: string): boolean => {
-
-    if (cedula) {
-
-        let onlyNumbers: boolean = /^\d+$/.test(cedula)
-        let correctLengthRange: boolean = true
-
-        if (cedula.length > 10 || cedula.length < 8) {
-            correctLengthRange = false
-        }
-
-        return onlyNumbers && correctLengthRange
-    }
-
-    return false
-
-
-}
-
-export const validateName = (name: string): boolean => {
-
-    if (name) {
-        let onlyLetters: boolean = /^[a-zA-Z\s]*$/.test(name)
-
-        return onlyLetters
-
-    }
-    return false
-
-
-}
-
-validateIfCedulaOrEmailExist('1001519751', 'pablito3@gmail.com')
 
