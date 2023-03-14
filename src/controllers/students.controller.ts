@@ -35,21 +35,18 @@ export const getStudents = async (req: any, res: any, next: any): Promise<void> 
         res.status(500).send()
         
     }
-    prisma.$disconnect
 
 }
 
 export const postStudent = async (req: any, res: any, next: any): Promise<void> => {
 
     res.send(await createStudent(req.body))
-    prisma.$disconnect
 
 }
 
 export const putStudent = async (req: any, res: any, next: any): Promise<void> => {
 
     res.send(await updateStudent(req.body))
-    prisma.$disconnect
 
 
 }
@@ -57,7 +54,6 @@ export const putStudent = async (req: any, res: any, next: any): Promise<void> =
 export const deleteStudent = async (req: any, res: any, next: any): Promise<void> => {
 
     res.send(await removeStudent(req.body))
-    prisma.$disconnect
 
 }
 
