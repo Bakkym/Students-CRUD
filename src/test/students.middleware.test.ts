@@ -2,6 +2,10 @@
 import { expect, test, describe, vi } from 'vitest'
 import {validateCedula, validateName, validateData, validateIfCedulaOrEmailNotExist, validateIfCedulaExist} from '../middlewares/students.validateData'
 
+import { setupStudents } from '../libs/initialSetup'
+
+await setupStudents()
+
 
 describe('validateCedula testing', () => {
 
@@ -55,7 +59,7 @@ describe('validateData testing', () => {
 describe('validateIfCedulaExists testing', () => {
 
     test('Cédula already register PASS', async () => {
-        expect(await validateIfCedulaExist('1001639741')).toBe(true)
+        expect(await validateIfCedulaExist('1001636548')).toBe(true)
     })
 
     test("Cédula doesn't exist FAIL", async () => {
