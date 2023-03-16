@@ -7,7 +7,7 @@ vi.mock('../libs/prisma')
 
 
 describe('GET METHOD', () => {
-    test('Obteniendo todos los estudiantes de la base de datos', async () => {
+    test('Obtaining all the students from the database PASS', async () => {
 
         const students = [{
             cedula: '5223459284',
@@ -27,13 +27,27 @@ describe('GET METHOD', () => {
 
         prisma.students.findMany.mockResolvedValue(students)
 
-        expect(obtainStudents).toHaveBeenCalled
+        const allStudents = await obtainStudents()
+
+        expect(allStudents).toHaveBeenCalled
+        expect(allStudents).toBe(students)
+    })
+
+    test('Obtaining all the students from the database FAIL', async () => {
+        prisma.students.findMany.mockRejectedValue(() => {
+            throw new Error('student geting failed')
+        })
+
+        const allStudents = await obtainStudents()
+
+        expect(allStudents).toThrowError
+
 
     })
 })
 
 describe('POST METHOD', () => {
-    test('Agregando un estudiante a la base de datos PASS', async () =>{
+    test('Adding new student to database PASS', async () =>{
         const student = {
             cedula: '5223459284',
             name: 'Juan David Barrientos',
@@ -52,7 +66,7 @@ describe('POST METHOD', () => {
 
     })
 
-    test('Agregando un estudiante con datos incompletos Error',async () => {
+    test('Adding new student with incomplete data Error',async () => {
         const student = {
             cedula: '5223459284',
             name: '',
@@ -72,7 +86,7 @@ describe('POST METHOD', () => {
 
 
 describe('PUT METHOD', () => {
-    test('Actualizando el nombre y carrera de un estudiante en la base de datos', async() => {
+    test("Updating a student's name and career PASS", async() => {
         const student = {
             cedula: '1033459284',
             name: 'Juan David Barrientos',
@@ -87,10 +101,32 @@ describe('PUT METHOD', () => {
         expect(updatedStudent).toStrictEqual(student)
 
     })
+
+    test("Updating a student's cedula FAIL", async () => {
+        const student = {
+            cedula: '103353439284',
+            name: 'Juan David Barrientos',
+            email: 'david@gmail.com',
+            phone: '32452525324',
+            career: 'Ing elećtrica',
+        }
+
+        prisma.students.update.mockRejectedValue(() => {
+            throw new Error('Student updating failed')
+        })
+
+        const updatedStudent = await updateStudent(student)
+        expect(updatedStudent).toThrowError
+
+
+
+
+        
+    })
 })
 
 describe('DELETE METHOD', () => {
-    test('Eliminando un estudiante de la base de datos', async () => {
+    test('Deleting a student from the database PASS', async () => {
         const student = {
             cedula: '1033459284',
         }
@@ -103,15 +139,16 @@ describe('DELETE METHOD', () => {
 
     
     })
-    test ('Fallo al intentar borrar un estudiante de la base de datos', async() => {
+    test ('Deleting a student from the dataase FAIL', async() => {
         const student = {
             cedula: '1033459284',
         }
 
-        prisma.students.delete.mockRejectedValue
+        prisma.students.delete.mockRejectedValue(() => {
+            throw new Error('Student delete failed')
+        })
 
         const deletedStudent = await removeStudent(student)
-
         expect(deletedStudent).toThrowError
         
     })
