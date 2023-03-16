@@ -1,6 +1,6 @@
 
 import { expect, test, describe, vi } from 'vitest'
-import { createStudent, updateStudent, removeStudent, getStudents} from '../controllers/students.controller'
+import { createStudent, updateStudent, removeStudent, obtainStudents } from '../controllers/functions/students.function'
 import prisma from '../libs/__mocks__/prisma'
 
 vi.mock('../libs/prisma')
@@ -27,7 +27,7 @@ describe('GET METHOD', () => {
 
         prisma.students.findMany.mockResolvedValue(students)
 
-        expect(getStudents).toHaveBeenCalled
+        expect(obtainStudents).toHaveBeenCalled
 
     })
 })
