@@ -1,3 +1,4 @@
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=Bakkym_Students-CRUD)](https://sonarcloud.io/summary/new_code?id=Bakkym_Students-CRUD)
 # REST API students application
 
 This is a CRUD application for student's info
@@ -10,25 +11,18 @@ The **Postgresql** database and **Sonarqube** are contained within the `docker-c
 - Docker
 - NodeJs
 
-
-**Add .env file into prisma folder with the database URL**
-
-    DATABASE_URL="postgres://sonarqube:sonarqube@localhost:5433/students"
-
 ## Install packages
     npm install
 ## Set-up docker-compose environment
     docker-compose up -d
 
 ## Set-up prisma 
-    cd src && npx prisma generate
+    cd src && npx prisma generate && npx prisma migrate dev --name init
 ## Run the tests
     npm run test
 ## Run the app
     npm start
 
-
-    
 #   REST API
 ### /api/students
 * `GET` : Get all students
@@ -65,5 +59,9 @@ The **Postgresql** database and **Sonarqube** are contained within the `docker-c
 *  `DELETE` : Delete a specific student
     #### Delete request
         http://localhost:4000/api/students
+    #### Body
+        {
+        "cedula": "1001519284"
+        }
 
 
