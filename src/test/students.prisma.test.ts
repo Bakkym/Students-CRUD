@@ -1,6 +1,6 @@
 
 import { expect, test, describe, vi } from 'vitest'
-import { createStudent, updateStudent, removeStudent, obtainStudents} from '../controllers/functions/students.function'
+import { createStudent, updateStudent, removeStudent, obtainStudents } from '../controllers/functions/students.function'
 import prisma from '../libs/__mocks__/prisma'
 
 vi.mock('../libs/prisma')

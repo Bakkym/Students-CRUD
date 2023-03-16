@@ -1,4 +1,4 @@
-import {createStudent} from '../controllers/students.controller'
+import {createStudent} from '../controllers/functions/students.function'
 
 const students = [{
     cedula: '1001636548',
