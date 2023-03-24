@@ -1,8 +1,11 @@
 name: Build
 on:
- pull_request:
+  pull_request:
    branches:
      - main
+  push:
+    branches:
+      - main
 jobs:
   sonarcloud:
     name: SonarCloud
@@ -27,4 +30,4 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets. SONARCLOUD_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
