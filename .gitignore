@@ -64,3 +64,6 @@ terraform.rc
 
 sonarqube.txt
 .scannerwork
+
+#notes
+**/notes
